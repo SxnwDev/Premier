@@ -2618,6 +2618,8 @@ do
 		config.library = self
 		local page = page.new(config)
 
+		table.insert(self.pages, page)
+
 		page.button.MouseEnter:Connect(function()
 			if library.Settings_Visible then
 				return
@@ -2726,6 +2728,28 @@ do
 	end
 	function library:SelectPage(page: table, toggle: boolean)
 		if toggle and library.focusedPage == page then
+			return
+		end
+
+		if not page and #self.pages > 0 then
+			page = self.pages[1]
+			library.Functions.Tween(page.button, { ImageColor3 = library.Settings.theme.Accent }, 0.2)
+			library.Functions.Tween(page.button.Parent.Dot, { Position = UDim2.new(0.5, 0, 1, 0) }, 0.4)
+			library.Functions.showInstance(page.button.Parent.Dot, 0.4)
+
+			local focusedPage = library.focusedPage
+			library.focusedPage = page
+
+			if focusedPage then
+				self:SelectPage(focusedPage)
+			end
+			task.wait(0.1)
+
+			page.container.Visible = true
+
+			task.spawn(function()
+				page:Resize()
+			end)
 			return
 		end
 
