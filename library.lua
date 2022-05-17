@@ -3267,11 +3267,6 @@ do
 
 		local active = library.Functions.findByIndex(config, "Default") or false
 		self:updateToggle(toggle, { Default = active })
-		table.insert(end_funcs, function()
-			pcall(function()
-				self:updateToggle(toggle, { Default = false })
-			end)
-		end)
 
 		toggle.MouseButton1Click:Connect(function()
 			active = not active
@@ -3368,15 +3363,6 @@ do
 			{ Default = checkbox.IsEnabled.Value },
 			library.Functions.findByIndex(config, "Group")
 		)
-		table.insert(end_funcs, function()
-			pcall(function()
-				self:updateCheckbox(
-					checkbox,
-					{ Default = false },
-					library.Functions.findByIndex(config, "Group")
-				)
-			end)
-		end)
 
 		checkbox.MouseButton1Click:Connect(function()
 			checkbox.IsEnabled.Value = not checkbox.IsEnabled.Value
@@ -3498,11 +3484,6 @@ do
 			end,
 		}
 
-		table.insert(end_funcs, function()
-			pcall(function()
-				self:updateKeybind(keybind)
-			end)
-		end)
 		if library.Functions.findByIndex(config, "default") and library.Functions.findByIndex(config, "callback") then
 			self:updateKeybind(keybind, { key = library.Functions.findByIndex(config, "default") })
 		end
