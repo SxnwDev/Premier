@@ -7,6 +7,7 @@ local library = {
 	Name = "Premier X",
 	IsLoaded = false,
 	data = {},
+	end_funcs = {},
 	Icons = {
 		["activity"] = "rbxassetid://7733655755",
 		["add"] = "rbxassetid://3944675151",
@@ -671,7 +672,6 @@ library.Settings.fileName = library.Name .. "_Settings.txt"
 local page = {}
 local section = {}
 local objects = {}
-local end_funcs = {}
 local connections = {}
 local binds = {}
 local InstancesOpacity = {}
@@ -1441,7 +1441,7 @@ do
 	library.SettingsLoad()
 end
 -- End function
-table.insert(end_funcs, function()
+table.insert(library.end_funcs, function()
 	for i, v in pairs(connections) do
 		pcall(function()
 			v:Disconnect()
@@ -1453,7 +1453,7 @@ function library.End()
 	library.Enabled = false
 	library:SettingsSave()
 	task.spawn(function()
-		for _, func in pairs(end_funcs) do
+		for _, func in pairs(library.end_funcs) do
 			func()
 		end
 		for _, key in pairs(binds) do
