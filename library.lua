@@ -2747,9 +2747,12 @@ do
 		if table.find(self.modules, info) then
 			return info
 		end
+		if library.Functions.findValue(self.modules, info) then
+			return info
+		end
 
 		for i, module in pairs(self.modules) do
-			if (module:FindFirstChild("Title") or module:FindFirstChild("TextBox", true)).Text == info then
+			if (module:FindFirstChild("Title") or module:FindFirstChild("TextBox", true)) and (module:FindFirstChild("Title") or module:FindFirstChild("TextBox", true)).Text == info then
 				return module
 			end
 		end
