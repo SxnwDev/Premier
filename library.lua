@@ -1,7 +1,6 @@
 -- game variables
 local player = game:GetService("Players").LocalPlayer
 local mouse = player:GetMouse()
-local char = player.Character
 -- Library variables
 local library = {
 	Name = "Premier X",
@@ -3293,6 +3292,10 @@ do
 					}),
 				}),
 			}),
+			library.Functions.newInstance("BoolValue", {
+				Name = "ResetOnSpawn",
+				Value = library.Functions.findByIndex(config, "ResetOnSpawn") and true or false,
+			}),
 			library.Functions.newInstance("StringValue", {
 				Name = "SearchValue",
 				Value = library.Functions.findByIndex(config, "Title") or "Toggle",
@@ -3304,6 +3307,22 @@ do
 
 		local active = library.Functions.findByIndex(config, "Default") or false
 		self:updateToggle(toggle, { Default = active })
+		if player.Character then
+			if player.Character.Humanoid then
+				table.insert( connections, player.character.Humanoid.Died:Connect(function()
+					if toggle.ResetOnSpawn then
+						self:updateToggle(toggle, { Default = false })
+					end
+				end))
+			end
+			table.insert( connections, player.CharacterAdded:Connect(function(character)
+				character:WaitForChild("Humanoid").Died:Connect(function()
+					if toggle.ResetOnSpawn then
+						self:updateToggle(toggle, { Default = false })
+					end
+				end)
+			end))
+		end
 
 		toggle.MouseButton1Click:Connect(function()
 			local position = {
