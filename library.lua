@@ -3815,11 +3815,26 @@ do
 			library.Functions.newInstance("UICorner", {
 				CornerRadius = UDim.new(0, library.Functions.findByIndex(config, "Corner") or 5),
 			}),
-			library.Functions.newInstance("WorldModel"),
-			library.Functions.newInstance("BoolValue", {
-				Name = "ResetOnSpawn",
-				Value = library.Functions.findByIndex(config, "ResetOnSpawn") and true or false,
+			library.Functions.newInstance("ImageButton", {
+				BackgroundColor3 = library.Settings.theme.Contrast,
+				AutoButtonColor = false,
+				Size = UDim2.new(0, 25, 0, 25),
+				Position = UDim2.new(1, -5, 0, 5),
+				AnchorPoint = Vector2.new(1, 0),
+			}, {
+				library.Functions.newInstance("UICorner", {
+					CornerRadius = UDim.new(0, 5),
+				}),
+				library.Functions.newInstance("ImageLabel", {
+					Image = library.Icons["refresh-cw"],
+					ImageColor3 = library.Settings.theme.TextColor,
+					BackgroundTransparency = 1,
+					Size = UDim2.new(0, 15, 0, 15),
+					Position = UDim2.new(0.5, 0, 0.5, 0),
+					AnchorPoint = Vector2.new(0.5, 0.5),
+				}),
 			}),
+			library.Functions.newInstance("WorldModel"),
 			library.Functions.newInstance("StringValue", {
 				Name = "SearchValue",
 				Value = library.Functions.findByIndex(config, "Player") and library.Functions.findByIndex(
@@ -3839,18 +3854,24 @@ do
 				end)
 			end
 			newConfig = newConfig or config
-			if library.Functions.findByIndex(newConfig, "Player") then
-				ViewPlayer.SearchValue.Value = library.Functions.findByIndex(newConfig, "Player").Name
+
+			local PLAYER = library.Functions.findByIndex(config, "player")
+			if not PLAYER or PLAYER.Parent ~= game.Players then
+				return
+			end
+			local CHARACTER = PLAYER.Character or PLAYER.CharacterAdded:Wait()
+			if PLAYER then
+				ViewPlayer.SearchValue.Value = PLAYER.Name
 			end
 
 			ViewPlayer.WorldModel:ClearAllChildren()
 
-			library.Functions.findByIndex(newConfig, "Player").Character.Archivable = true
+			CHARACTER.Archivable = true
 
-			local model = library.Functions.findByIndex(newConfig, "Player").Character:Clone()
+			local model = CHARACTER:Clone()
 			model.Parent = ViewPlayer.WorldModel
 			model.Humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
-			model:SetPrimaryPartCFrame(CFrame.new(Vector3.new(0, 0, -5), Vector3.new(0, 0, 0)))
+			model:SetPrimaryPartCFrame(library.Functions.findByIndex(newConfig, "Position") or CFrame.new(Vector3.new(0, 0, -5), Vector3.new(0, 0, 0)))
 
 			local function UpdateAnim(Char, CloneChar)
 				if #CloneChar.Humanoid:GetPlayingAnimationTracks() > #Char.Humanoid:GetPlayingAnimationTracks() then
@@ -3882,7 +3903,7 @@ do
 			task.spawn(function()
 				table.insert(PV_connections, game:GetService("RunService").Heartbeat:Connect(function()
 					pcall(function()
-						UpdateAnim(library.Functions.findByIndex(newConfig, "Player").Character, model)
+						UpdateAnim(CHARACTER, model)
 					end)
 				end))
 			end)
@@ -3904,11 +3925,7 @@ do
 					return
 				end
 				if currentX then
-					model.PrimaryPart.CFrame *= CFrame.fromEulerAnglesXYZ(
-						0,
-						((X - currentX) * 0.025),
-						0
-					)
+					model:SetPrimaryPartCFrame(model.PrimaryPart.CFrame * CFrame.fromEulerAnglesXYZ(0, ((X - currentX) * 0.025), 0))
 				end
 				currentX = X
 			end))
@@ -3919,28 +3936,14 @@ do
 				library.DraggingDisable = false
 			end))
 		end
-		if library.Functions.findByIndex(config, "player") then
+		local PLAYER = library.Functions.findByIndex(config, "player")
+		if PLAYER.Parent == game.Players then
 			Update()
-
-			if library.Functions.findByIndex(config, "player").Character.Humanoid then
-				table.insert(connections, library.Functions.findByIndex(config, "player").character.Humanoid.Died:Connect(function()
-					if ViewPlayer:FindFirstChild("ResetOnSpawn") and ViewPlayer:FindFirstChild("ResetOnSpawn").Value then
-						pcall(function()
-							Update()
-						end)
-					end
-				end))
-			end
-			table.insert(connections, library.Functions.findByIndex(config, "player").CharacterAdded:Connect(function(character)
-				character:WaitForChild("Humanoid").Died:Connect(function()
-					if ViewPlayer:FindFirstChild("ResetOnSpawn") and ViewPlayer:FindFirstChild("ResetOnSpawn").Value then
-						pcall(function()
-							Update()
-						end)
-					end
-				end)
-			end))
 		end
+		ViewPlayer.ImageButton.MouseButton1Click:Connect(function()
+			library.Functions.Ripple(ViewPlayer.ImageButton, 0.5)
+			Update()
+		end)
 
 		return { ViewPlayer = ViewPlayer, Update = Update }
 	end
@@ -4461,7 +4464,7 @@ return library
 -- local page4 = window:addPage() -- new page
 -- local section1 = page2:addSection({ Divisions = 2 }) -- new section
 
--- section1:addViewPlayer({ model = char })
+-- section1:addViewPlayer({ player = player, position = CFrame.new(Vector3.new(0, 1.5, -5), Vector3.new(0, 1.5, 0)) })
 -- section1:addButton({ section = 2 })
 -- section1:addSlider({ section = 2, Max = 10 })
 -- section1:addToggle({ section = 2 })
