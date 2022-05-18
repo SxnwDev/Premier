@@ -2306,7 +2306,6 @@ do
 				PaddingBottom = UDim.new(0, 15),
 			}),
 		})
-
 		return setmetatable({
 			container = ScreenGui,
 			pageContainer = Sidebar.PageContainer,
