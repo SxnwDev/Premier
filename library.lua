@@ -3312,13 +3312,8 @@ do
 				end)
 			end
 		end)
-		local this = {}
-		-- return toggle
-		return setmetatable({}, {
-			__index = function(_, k)
-				return this[k] or toggle[k]
-			end,
-		})
+
+		return toggle
 	end
 	function section:addCheckbox(config: table): Instance
 		config = config or {}
