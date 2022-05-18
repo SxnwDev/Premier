@@ -836,24 +836,22 @@ do
 	function library.Functions.DraggingEnabled(instance: Instance, parent: Instance)
 		parent = parent or instance
 		instance.InputBegan:Connect(function(input, processed)
-			if library.DraggingDisable then return end
+			if library.DraggingDisable then
+				return
+			end
 			if not processed and input.UserInputType == Enum.UserInputType.MouseButton1 then
 				local mousePos, framePos = input.Position, parent.Position
 				repeat
 					task.wait()
 					local delta = Vector2.new(mouse.X - mousePos.X, mouse.Y - mousePos.Y)
-					library.Functions.Tween(
-						parent,
-						{
-							Position = UDim2.new(
-								framePos.X.Scale,
-								framePos.X.Offset + delta.X,
-								framePos.Y.Scale,
-								framePos.Y.Offset + delta.Y
-							),
-						},
-						0.1
-					)
+					library.Functions.Tween(parent, {
+						Position = UDim2.new(
+							framePos.X.Scale,
+							framePos.X.Offset + delta.X,
+							framePos.Y.Scale,
+							framePos.Y.Offset + delta.Y
+						),
+					}, 0.1)
 				until not game:GetService("UserInputService"):IsMouseButtonPressed(Enum.UserInputType.MouseButton1)
 			end
 		end)
@@ -903,7 +901,13 @@ do
 	function library.Functions.hideInstance(instance: Instance, duration: number)
 		if not InstancesOpacity[instance] then
 			InstancesOpacity[instance] = {}
-		end--ScrollBarImageTransparency
+		end
+		pcall(function()
+			if not InstancesOpacity[instance].ScrollBarImageTransparency then
+				InstancesOpacity[instance].ScrollBarImageTransparency = instance.ScrollBarImageTransparency
+			end
+			library.Functions.Tween(instance, { ScrollBarImageTransparency = 1 }, duration or 0)
+		end)
 		pcall(function()
 			if not InstancesOpacity[instance].BackgroundTransparency then
 				InstancesOpacity[instance].BackgroundTransparency = instance.BackgroundTransparency
@@ -933,6 +937,12 @@ do
 				InstancesOpacity[v] = {}
 			end
 			pcall(function()
+				if not InstancesOpacity[v].ScrollBarImageTransparency then
+					InstancesOpacity[v].ScrollBarImageTransparency = v.ScrollBarImageTransparency
+				end
+				library.Functions.Tween(v, { ScrollBarImageTransparency = 1 }, duration or 0)
+			end)
+			pcall(function()
 				if not InstancesOpacity[v].BackgroundTransparency then
 					InstancesOpacity[v].BackgroundTransparency = v.BackgroundTransparency
 				end
@@ -958,6 +968,16 @@ do
 			task.wait()
 		end)
 		pcall(function()
+			library.Functions.Tween(
+				instance,
+				{
+					ScrollBarImageTransparency = InstancesOpacity[instance].ScrollBarImageTransparency
+						or instance.ScrollBarImageTransparency,
+				},
+				duration or 0
+			)
+		end)
+		pcall(function()
 			library.Functions.Tween(instance, {
 				BackgroundTransparency = InstancesOpacity[instance].BackgroundTransparency
 					or instance.BackgroundTransparency,
@@ -981,6 +1001,16 @@ do
 			InstancesOpacity[instance] = nil
 		end
 		for i, v in pairs(instance:GetDescendants()) do
+			pcall(function()
+				library.Functions.Tween(
+					v,
+					{
+						ScrollBarImageTransparency = InstancesOpacity[v].ScrollBarImageTransparency
+							or v.ScrollBarImageTransparency,
+					},
+					duration or 0
+				)
+			end)
 			pcall(function()
 				library.Functions.Tween(
 					v,
@@ -2805,8 +2835,12 @@ do
 
 		if container.Visible then
 			library.Functions.hideInstance(container, 0.4)
+			library.Functions.Tween(container, {Position = container.Position + UDim2.new(1, 0, 0, 0)}, 0.6)
+			task.wait(0.6)
 		else
 			library.Functions.showInstance(container, 0.4)
+			library.Functions.Tween(container, {Position = container.Position - UDim2.new(1, 0, 0, 0)}, 0.4)
+			task.wait(0.4)
 		end
 
 		self.toggling = false
@@ -3145,7 +3179,7 @@ do
 						}, {
 							library.Functions.newInstance("UICorner", {
 								CornerRadius = UDim.new(1, 0),
-							})
+							}),
 						}),
 					}),
 				}),
@@ -3799,7 +3833,10 @@ do
 					if not CloneChar.Humanoid:GetPlayingAnimationTracks()[i] then
 						CloneChar.Humanoid.Animator:LoadAnimation(v.Animation):Play(0.2)
 					else
-						if CloneChar.Humanoid:GetPlayingAnimationTracks()[i].Animation.AnimationId ~= v.Animation.AnimationId then
+						if
+							CloneChar.Humanoid:GetPlayingAnimationTracks()[i].Animation.AnimationId
+							~= v.Animation.AnimationId
+						then
 							for k = #CloneChar.Humanoid:GetPlayingAnimationTracks(), i, -1 do
 								pcall(function()
 									CloneChar.Humanoid:GetPlayingAnimationTracks()[i]:Stop(0.1)
@@ -3824,7 +3861,8 @@ do
 			local MouseButton1Down = false
 			local connection = ViewPlayer.InputBegan:Connect(function(input, processed)
 				if not processed and input.UserInputType == Enum.UserInputType.MouseButton1 then
-					repeat task.wait()
+					repeat
+						task.wait()
 						MouseButton1Down = true
 					until not game:GetService("UserInputService"):IsMouseButtonPressed(Enum.UserInputType.MouseButton1)
 					MouseButton1Down = false
@@ -3832,17 +3870,27 @@ do
 				end
 			end)
 			table.insert(PV_connections, connection)
-			local connection = ViewPlayer.MouseMoved:Connect(function(X,Y)
-				if not MouseButton1Down then return end
+			local connection = ViewPlayer.MouseMoved:Connect(function(X, Y)
+				if not MouseButton1Down then
+					return
+				end
 				if currentX then
-					ViewPlayer.WorldModel[library.Functions.findByIndex(newConfig, "Model").Name].PrimaryPart.CFrame *= CFrame.fromEulerAnglesXYZ(0,((X-currentX)*.025),0)
+					ViewPlayer.WorldModel[library.Functions.findByIndex(newConfig, "Model").Name].PrimaryPart.CFrame *= CFrame.fromEulerAnglesXYZ(
+						0,
+						((X - currentX) * 0.025),
+						0
+					)
 				end
 				currentX = X
 			end)
 			table.insert(PV_connections, connection)
-			local connection = ViewPlayer.MouseEnter:Connect(function() library.DraggingDisable = true end)
+			local connection = ViewPlayer.MouseEnter:Connect(function()
+				library.DraggingDisable = true
+			end)
 			table.insert(PV_connections, connection)
-			local connection = ViewPlayer.MouseLeave:Connect(function() library.DraggingDisable = false end)
+			local connection = ViewPlayer.MouseLeave:Connect(function()
+				library.DraggingDisable = false
+			end)
 			table.insert(PV_connections, connection)
 		end
 		if library.Functions.findByIndex(config, "Model") then
@@ -3857,7 +3905,7 @@ do
 	-- function section:addGridPanel(config: table): Instance
 	-- 	config = config or {}
 
-	-- 	local GridPanel = 
+	-- 	local GridPanel =
 	-- 	library.Functions.newInstance("ScrollingFrame", {
 	-- 		Name = "GridPanel_Element",
 	-- 		ClipsDescendants = true,
@@ -4349,40 +4397,40 @@ do
 	end
 end
 
-return library
+-- return library
 
--- local window = library.new() -- create new window
--- local prefix = Enum.KeyCode.Home
+local window = library.new() -- create new window
+local prefix = Enum.KeyCode.Home
 
--- local usePrefix = game:GetService("UserInputService").InputBegan:Connect(function(input, processed)
--- 	if not processed and input.KeyCode == prefix then
--- 		window:toggle()
--- 	end
--- end)
--- table.insert(connections, usePrefix)
+local usePrefix = game:GetService("UserInputService").InputBegan:Connect(function(input, processed)
+	if not processed and input.KeyCode == prefix then
+		window:toggle()
+	end
+end)
+table.insert(connections, usePrefix)
 
--- local page1 = window:addPage() -- new page
--- local page2 = window:addPage() -- new page
--- local page3 = window:addPage() -- new page
--- local page4 = window:addPage() -- new page
--- local section1 = page2:addSection({ Divisions = 2 }) -- new section
+local page1 = window:addPage() -- new page
+local page2 = window:addPage() -- new page
+local page3 = window:addPage() -- new page
+local page4 = window:addPage() -- new page
+local section1 = page2:addSection({ Divisions = 2 }) -- new section
 
--- section1:addViewPlayer({ model = char })
--- section1:addButton({ section = 2 })
--- section1:addSlider({ section = 2, Max = 10 })
--- section1:addToggle({ section = 2 })
--- section1:addKeybind({ section = 2 })
--- section1:addCheckbox({ section = 2 })
--- section1:addClipboardLabel({ section = 2, text = "https://discord.gg/PremierX" })
--- section1:addDropdown({
--- 	section = 2,
--- 	Title = "MultiDropdown",
--- 	Multi = true,
--- 	List = { "Item 1", "Item 2", "Item 3" }
--- })
--- section1:addDropdown({
--- 	section = 2,
--- 	List = { "Item 1", "Item 2", "Item 3", "Item 4" }
--- })
+section1:addViewPlayer({ model = char })
+section1:addButton({ section = 2 })
+section1:addSlider({ section = 2, Max = 10 })
+section1:addToggle({ section = 2 })
+section1:addKeybind({ section = 2 })
+section1:addCheckbox({ section = 2 })
+section1:addClipboardLabel({ section = 2, text = "https://discord.gg/PremierX" })
+section1:addDropdown({
+	section = 2,
+	Title = "MultiDropdown",
+	Multi = true,
+	List = { "Item 1", "Item 2", "Item 3" },
+})
+section1:addDropdown({
+	section = 2,
+	List = { "Item 1", "Item 2", "Item 3", "Item 4" },
+})
 
--- window:SelectPage(page2, true)
+window:SelectPage(page2, true)
