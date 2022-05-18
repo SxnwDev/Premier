@@ -1514,10 +1514,11 @@ do
 			end
 		end)
 
-		local AntiAFK = player.Idled:connect(function()
-			game:service("VirtualUser"):ClickButton2(Vector2.new())
-		end)
-		table.insert(connections, AntiAFK)
+		for i, v in next, getconnections(player.Idled) do
+			if library.Enabled then
+				v:Disconnect()
+			end
+		end
 		local ScreenGui = library.Functions.newInstance("ScreenGui", {
 			Name = library.Name,
 			Parent = game.CoreGui,
@@ -3818,11 +3819,15 @@ do
 				CornerRadius = UDim.new(0, library.Functions.findByIndex(config, "Corner") or 5),
 			}),
 			library.Functions.newInstance("WorldModel"),
+			library.Functions.newInstance("BoolValue", {
+				Name = "ResetOnSpawn",
+				Value = library.Functions.findByIndex(config, "ResetOnSpawn") and true or false,
+			}),
 			library.Functions.newInstance("StringValue", {
 				Name = "SearchValue",
-				Value = library.Functions.findByIndex(config, "Model") and library.Functions.findByIndex(
+				Value = library.Functions.findByIndex(config, "Player") and library.Functions.findByIndex(
 					config,
-					"Model"
+					"Player"
 				).Name or "ViewPlayer",
 			}),
 		})
@@ -3837,15 +3842,15 @@ do
 				end)
 			end
 			newConfig = newConfig or config
-			if library.Functions.findByIndex(newConfig, "Model") then
-				ViewPlayer.SearchValue.Value = library.Functions.findByIndex(newConfig, "Model").Name
+			if library.Functions.findByIndex(newConfig, "Player") then
+				ViewPlayer.SearchValue.Value = library.Functions.findByIndex(newConfig, "Player").Name
 			end
 
 			ViewPlayer.WorldModel:ClearAllChildren()
 
-			library.Functions.findByIndex(newConfig, "Model").Archivable = true
+			library.Functions.findByIndex(newConfig, "Player").Character.Archivable = true
 
-			local model = library.Functions.findByIndex(newConfig, "Model"):Clone()
+			local model = library.Functions.findByIndex(newConfig, "Player").Character:Clone()
 			model.Parent = ViewPlayer.WorldModel
 			model.Humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
 			model:SetPrimaryPartCFrame(CFrame.new(Vector3.new(0, 0, -5), Vector3.new(0, 0, 0)))
@@ -3878,17 +3883,16 @@ do
 			end
 
 			task.spawn(function()
-				local connection = game:GetService("RunService").Heartbeat:Connect(function()
+				table.insert(PV_connections, game:GetService("RunService").Heartbeat:Connect(function()
 					pcall(function()
-						UpdateAnim(library.Functions.findByIndex(newConfig, "Model"), model)
+						UpdateAnim(library.Functions.findByIndex(newConfig, "Player").Character, model)
 					end)
-				end)
-				table.insert(PV_connections, connection)
+				end))
 			end)
 
 			local currentX
 			local MouseButton1Down = false
-			local connection = ViewPlayer.InputBegan:Connect(function(input, processed)
+			table.insert(PV_connections, ViewPlayer.InputBegan:Connect(function(input, processed)
 				if not processed and input.UserInputType == Enum.UserInputType.MouseButton1 then
 					repeat
 						task.wait()
@@ -3897,34 +3901,50 @@ do
 					MouseButton1Down = false
 					currentX = nil
 				end
-			end)
-			table.insert(PV_connections, connection)
-			local connection = ViewPlayer.MouseMoved:Connect(function(X, Y)
+			end))
+			table.insert(PV_connections, ViewPlayer.MouseMoved:Connect(function(X, Y)
 				if not MouseButton1Down then
 					return
 				end
 				if currentX then
-					ViewPlayer.WorldModel[library.Functions.findByIndex(newConfig, "Model").Name].PrimaryPart.CFrame *= CFrame.fromEulerAnglesXYZ(
+					model.PrimaryPart.CFrame *= CFrame.fromEulerAnglesXYZ(
 						0,
 						((X - currentX) * 0.025),
 						0
 					)
 				end
 				currentX = X
-			end)
-			table.insert(PV_connections, connection)
-			local connection = ViewPlayer.MouseEnter:Connect(function()
+			end))
+			table.insert(PV_connections, ViewPlayer.MouseEnter:Connect(function()
 				library.DraggingDisable = true
-			end)
-			table.insert(PV_connections, connection)
-			local connection = ViewPlayer.MouseLeave:Connect(function()
+			end))
+			table.insert(PV_connections, ViewPlayer.MouseLeave:Connect(function()
 				library.DraggingDisable = false
-			end)
-			table.insert(PV_connections, connection)
+			end))
 		end
-		if library.Functions.findByIndex(config, "Model") then
+		if library.Functions.findByIndex(config, "player") then
 			Update()
+
+			if library.Functions.findByIndex(config, "player").Character.Humanoid then
+				table.insert(connections, library.Functions.findByIndex(config, "player").character.Humanoid.Died:Connect(function()
+					if ViewPlayer:FindFirstChild("ResetOnSpawn") and ViewPlayer:FindFirstChild("ResetOnSpawn").Value then
+						pcall(function()
+							Update()
+						end)
+					end
+				end))
+			end
+			table.insert(connections, library.Functions.findByIndex(config, "player").CharacterAdded:Connect(function(character)
+				character:WaitForChild("Humanoid").Died:Connect(function()
+					if ViewPlayer:FindFirstChild("ResetOnSpawn") and ViewPlayer:FindFirstChild("ResetOnSpawn").Value then
+						pcall(function()
+							Update()
+						end)
+					end
+				end)
+			end))
 		end
+
 		return { ViewPlayer = ViewPlayer, Update = Update }
 	end
 	-- function section:addPlayerBox(config: table): Instance
