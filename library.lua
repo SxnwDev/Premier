@@ -1513,12 +1513,11 @@ do
 				task.wait(5)
 			end
 		end)
-
-		for i, v in next, getconnections(player.Idled) do
-			if library.Enabled then
-				v:Disconnect()
-			end
-		end
+		
+		local AntiAFK = player.Idled:connect(function()
+			game:service("VirtualUser"):ClickButton2(Vector2.new())
+		end)
+		table.insert(connections, AntiAFK)
 		local ScreenGui = library.Functions.newInstance("ScreenGui", {
 			Name = library.Name,
 			Parent = game.CoreGui,
