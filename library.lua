@@ -3306,7 +3306,15 @@ do
 		self:updateToggle(toggle, { Default = active })
 
 		toggle.MouseButton1Click:Connect(function()
-			active = not active
+			local position = {
+				In = UDim2.new(0, 0, 0, 0),
+				Out = UDim2.new(1, -15, 0, 0),
+			}
+			if toggle.Frame.Button.Position == position.Out then
+				active = false
+			else
+				active = true
+			end
 			self:updateToggle(toggle, { Default = active })
 
 			if library.Functions.findByIndex(config, "CallBack") then
