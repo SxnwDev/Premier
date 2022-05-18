@@ -905,22 +905,28 @@ do
 			InstancesOpacity[instance] = {}
 		end
 		pcall(function()
+			if not InstancesOpacity[instance].ScrollBarImageTransparency then
+				InstancesOpacity[instance].ScrollBarImageTransparency = instance.ScrollBarImageTransparency
+			end
+			library.Functions.Tween(instance, { ScrollBarImageTransparency = 1 }, ((instance.ScrollBarImageTransparency)/duration) or 0)
+		end)
+		pcall(function()
 			if not InstancesOpacity[instance].BackgroundTransparency then
 				InstancesOpacity[instance].BackgroundTransparency = instance.BackgroundTransparency
 			end
-			library.Functions.Tween(instance, { BackgroundTransparency = 1 }, duration or 0)
+			library.Functions.Tween(instance, { BackgroundTransparency = 1 }, (instance.BackgroundTransparency/duration) or 0)
 		end)
 		pcall(function()
 			if not InstancesOpacity[instance].TextTransparency then
 				InstancesOpacity[instance].TextTransparency = instance.TextTransparency
 			end
-			library.Functions.Tween(instance, { TextTransparency = 1 }, duration or 0)
+			library.Functions.Tween(instance, { TextTransparency = 1 }, (instance.TextTransparency/duration) or 0)
 		end)
 		pcall(function()
 			if not InstancesOpacity[instance].ImageTransparency then
 				InstancesOpacity[instance].ImageTransparency = instance.ImageTransparency
 			end
-			library.Functions.Tween(instance, { ImageTransparency = 1 }, duration or 0)
+			library.Functions.Tween(instance, { ImageTransparency = 1 }, (instance.ImageTransparency/duration) or 0)
 		end)
 		task.spawn(function()
 			task.wait(duration or 0)
@@ -933,22 +939,28 @@ do
 				InstancesOpacity[v] = {}
 			end
 			pcall(function()
+				if not InstancesOpacity[v].ScrollBarImageTransparency then
+					InstancesOpacity[v].ScrollBarImageTransparency = v.ScrollBarImageTransparency
+				end
+				library.Functions.Tween(v, { ScrollBarImageTransparency = 1 }, ((v.ScrollBarImageTransparency)/duration) or 0)
+			end)
+			pcall(function()
 				if not InstancesOpacity[v].BackgroundTransparency then
 					InstancesOpacity[v].BackgroundTransparency = v.BackgroundTransparency
 				end
-				library.Functions.Tween(v, { BackgroundTransparency = 1 }, duration or 0)
+				library.Functions.Tween(v, { BackgroundTransparency = 1 }, (v.BackgroundTransparency/duration) or 0)
 			end)
 			pcall(function()
 				if not InstancesOpacity[v].TextTransparency then
 					InstancesOpacity[v].TextTransparency = v.TextTransparency
 				end
-				library.Functions.Tween(v, { TextTransparency = 1 }, duration or 0)
+				library.Functions.Tween(v, { TextTransparency = 1 }, (v.TextTransparency/duration) or 0)
 			end)
 			pcall(function()
 				if not InstancesOpacity[v].ImageTransparency then
 					InstancesOpacity[v].ImageTransparency = v.ImageTransparency
 				end
-				library.Functions.Tween(v, { ImageTransparency = 1 }, duration or 0)
+				library.Functions.Tween(v, { ImageTransparency = 1 }, (v.ImageTransparency/duration) or 0)
 			end)
 		end
 	end
@@ -959,22 +971,28 @@ do
 		end)
 		pcall(function()
 			library.Functions.Tween(instance, {
+				ScrollBarImageTransparency = InstancesOpacity[instance].ScrollBarImageTransparency
+					or instance.ScrollBarImageTransparency,
+			}, (((InstancesOpacity[instance].ScrollBarImageTransparency or instance.ScrollBarImageTransparency))/duration) or 0)
+		end)
+		pcall(function()
+			library.Functions.Tween(instance, {
 				BackgroundTransparency = InstancesOpacity[instance].BackgroundTransparency
 					or instance.BackgroundTransparency,
-			}, duration or 0)
+			}, (((InstancesOpacity[instance].BackgroundTransparency or instance.BackgroundTransparency))/duration) or 0)
 		end)
 		pcall(function()
 			library.Functions.Tween(
 				instance,
 				{ TextTransparency = InstancesOpacity[instance].TextTransparency or instance.TextTransparency },
-				duration or 0
+				(((InstancesOpacity[instance].TextTransparency or instance.TextTransparency))/duration) or 0
 			)
 		end)
 		pcall(function()
 			library.Functions.Tween(
 				instance,
 				{ ImageTransparency = InstancesOpacity[instance].ImageTransparency or instance.ImageTransparency },
-				duration or 0
+				(((InstancesOpacity[instance].ImageTransparency or instance.ImageTransparency))/duration) or 0
 			)
 		end)
 		if InstancesOpacity[instance] then
@@ -984,22 +1002,28 @@ do
 			pcall(function()
 				library.Functions.Tween(
 					v,
+					{ ScrollBarImageTransparency = InstancesOpacity[v].ScrollBarImageTransparency or v.ScrollBarImageTransparency },
+					(((InstancesOpacity[v].ScrollBarImageTransparency or v.ScrollBarImageTransparency))/duration) or 0)
+			end)
+			pcall(function()
+				library.Functions.Tween(
+					v,
 					{ BackgroundTransparency = InstancesOpacity[v].BackgroundTransparency or v.BackgroundTransparency },
-					duration or 0
+					(((InstancesOpacity[v].BackgroundTransparency or v.BackgroundTransparency))/duration) or 0
 				)
 			end)
 			pcall(function()
 				library.Functions.Tween(
 					v,
 					{ TextTransparency = InstancesOpacity[v].TextTransparency or v.TextTransparency },
-					duration or 0
+					(((InstancesOpacity[v].TextTransparency or v.TextTransparency))/duration) or 0
 				)
 			end)
 			pcall(function()
 				library.Functions.Tween(
 					v,
 					{ ImageTransparency = InstancesOpacity[v].ImageTransparency or v.ImageTransparency },
-					duration or 0
+					(((InstancesOpacity[v].ImageTransparency or v.ImageTransparency))/duration) or 0
 				)
 			end)
 			if InstancesOpacity[v] then
@@ -3850,10 +3874,42 @@ do
 		end
 		return { ViewPlayer = ViewPlayer, Update = Update }
 	end
-	function section:addPlayerBox(config: table): Instance
-		config = config or {}
+	-- function section:addPlayerBox(config: table): Instance
+	-- 	config = config or {}
 
-	end
+	-- end
+	-- function section:addGridPanel(config: table): Instance
+	-- 	config = config or {}
+
+	-- 	local GridPanel = 
+	-- 	library.Functions.newInstance("ScrollingFrame", {
+	-- 		Name = "GridPanel_Element",
+	-- 		ClipsDescendants = true,
+	-- 		Parent = (library.Functions.findByIndex(config, "section") or 1) > #self.container and self.container[#self.container] or self.container[library.Functions.findByIndex(config, "section") or 1],
+	-- 		Size = UDim2.new(1, 0, 0, 30),
+	-- 		BackgroundTransparency = 1,
+	-- 		BorderSizePixel = 0,
+	-- 		ScrollBarThickness = 3,
+	-- 		CanvasSize = UDim2.new(0, 0, 0, 0),
+	-- 		ScrollBarImageColor3 = library.Settings.theme.TextColor,
+	-- 	}, {
+	-- 		library.Functions.newInstance("UIGridLayout", {
+	-- 			HorizontalAlignment = Enum.HorizontalAlignment.Center,
+	-- 			CellPadding = UDim2.new(0, 5, 0, 5),
+	-- 			CellSize = library.Functions.findByIndex(config, "Size"),
+	-- 		}),
+	-- 		library.Functions.newInstance("StringValue", {
+	-- 			Name = "SearchValue",
+	-- 			Value = library.Functions.findByIndex(config, "Title") or "Button",
+	-- 		}),
+	-- 	})
+
+	-- 	-- add data
+
+	-- 	table.insert(self.modules, GridPanel)
+
+	-- 	return GridPanel
+	-- end
 
 	function section:updateButton(button: Instance, config: table)
 		config = config or {}
