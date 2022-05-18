@@ -1513,11 +1513,10 @@ do
 				task.wait(5)
 			end
 		end)
-		
-		local AntiAFK = player.Idled:connect(function()
+
+		table.insert(connections, player.Idled:connect(function()
 			game:service("VirtualUser"):ClickButton2(Vector2.new())
-		end)
-		table.insert(connections, AntiAFK)
+		end))
 		local ScreenGui = library.Functions.newInstance("ScreenGui", {
 			Name = library.Name,
 			Parent = game.CoreGui,
@@ -1561,10 +1560,9 @@ do
 			}),
 		})
 
-		local closeGui = ScreenGui.Destroying:connect(function()
+		table.insert(connections, ScreenGui.Destroying:connect(function()
 			library.End()
-		end)
-		table.insert(connections, closeGui)
+		end))
 
 		do
 			task.spawn(function()
