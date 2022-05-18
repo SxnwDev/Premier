@@ -3310,15 +3310,19 @@ do
 		if player.Character then
 			if player.Character.Humanoid then
 				table.insert( connections, player.character.Humanoid.Died:Connect(function()
-					if toggle.ResetOnSpawn then
-						self:updateToggle(toggle, { Default = false })
+					if toggle:FindFirstChild("ResetOnSpawn") and toggle:FindFirstChild("ResetOnSpawn").Value then
+						pcall(function()
+							self:updateToggle(toggle, { Default = false })
+						end)
 					end
 				end))
 			end
 			table.insert( connections, player.CharacterAdded:Connect(function(character)
 				character:WaitForChild("Humanoid").Died:Connect(function()
-					if toggle.ResetOnSpawn then
-						self:updateToggle(toggle, { Default = false })
+					if toggle:FindFirstChild("ResetOnSpawn") and toggle:FindFirstChild("ResetOnSpawn").Value then
+						pcall(function()
+							self:updateToggle(toggle, { Default = false })
+						end)
 					end
 				end)
 			end))
