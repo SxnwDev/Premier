@@ -6,6 +6,7 @@ local char = player.Character
 local library = {
 	Name = "Premier X",
 	IsLoaded = false,
+	prefix = Enum.KeyCode.LeftAlt,
 	data = {},
 	end_funcs = {},
 	Icons = {
