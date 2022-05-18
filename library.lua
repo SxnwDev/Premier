@@ -908,25 +908,25 @@ do
 			if not InstancesOpacity[instance].ScrollBarImageTransparency then
 				InstancesOpacity[instance].ScrollBarImageTransparency = instance.ScrollBarImageTransparency
 			end
-			library.Functions.Tween(instance, { ScrollBarImageTransparency = 1 }, ((instance.ScrollBarImageTransparency)/duration) or 0)
+			library.Functions.Tween(instance, { ScrollBarImageTransparency = 1 }, (duration/instance.ScrollBarImageTransparency) or 0)
 		end)
 		pcall(function()
 			if not InstancesOpacity[instance].BackgroundTransparency then
 				InstancesOpacity[instance].BackgroundTransparency = instance.BackgroundTransparency
 			end
-			library.Functions.Tween(instance, { BackgroundTransparency = 1 }, (instance.BackgroundTransparency/duration) or 0)
+			library.Functions.Tween(instance, { BackgroundTransparency = 1 }, (duration/instance.BackgroundTransparency) or 0)
 		end)
 		pcall(function()
 			if not InstancesOpacity[instance].TextTransparency then
 				InstancesOpacity[instance].TextTransparency = instance.TextTransparency
 			end
-			library.Functions.Tween(instance, { TextTransparency = 1 }, (instance.TextTransparency/duration) or 0)
+			library.Functions.Tween(instance, { TextTransparency = 1 }, (duration/instance.TextTransparency) or 0)
 		end)
 		pcall(function()
 			if not InstancesOpacity[instance].ImageTransparency then
 				InstancesOpacity[instance].ImageTransparency = instance.ImageTransparency
 			end
-			library.Functions.Tween(instance, { ImageTransparency = 1 }, (instance.ImageTransparency/duration) or 0)
+			library.Functions.Tween(instance, { ImageTransparency = 1 }, (duration/instance.ImageTransparency) or 0)
 		end)
 		task.spawn(function()
 			task.wait(duration or 0)
@@ -942,25 +942,25 @@ do
 				if not InstancesOpacity[v].ScrollBarImageTransparency then
 					InstancesOpacity[v].ScrollBarImageTransparency = v.ScrollBarImageTransparency
 				end
-				library.Functions.Tween(v, { ScrollBarImageTransparency = 1 }, ((v.ScrollBarImageTransparency)/duration) or 0)
+				library.Functions.Tween(v, { ScrollBarImageTransparency = 1 }, (duration/v.ScrollBarImageTransparency) or 0)
 			end)
 			pcall(function()
 				if not InstancesOpacity[v].BackgroundTransparency then
 					InstancesOpacity[v].BackgroundTransparency = v.BackgroundTransparency
 				end
-				library.Functions.Tween(v, { BackgroundTransparency = 1 }, (v.BackgroundTransparency/duration) or 0)
+				library.Functions.Tween(v, { BackgroundTransparency = 1 }, (duration/v.BackgroundTransparency) or 0)
 			end)
 			pcall(function()
 				if not InstancesOpacity[v].TextTransparency then
 					InstancesOpacity[v].TextTransparency = v.TextTransparency
 				end
-				library.Functions.Tween(v, { TextTransparency = 1 }, (v.TextTransparency/duration) or 0)
+				library.Functions.Tween(v, { TextTransparency = 1 }, (duration/v.TextTransparency) or 0)
 			end)
 			pcall(function()
 				if not InstancesOpacity[v].ImageTransparency then
 					InstancesOpacity[v].ImageTransparency = v.ImageTransparency
 				end
-				library.Functions.Tween(v, { ImageTransparency = 1 }, (v.ImageTransparency/duration) or 0)
+				library.Functions.Tween(v, { ImageTransparency = 1 }, (duration/v.ImageTransparency) or 0)
 			end)
 		end
 	end
@@ -973,26 +973,26 @@ do
 			library.Functions.Tween(instance, {
 				ScrollBarImageTransparency = InstancesOpacity[instance].ScrollBarImageTransparency
 					or instance.ScrollBarImageTransparency,
-			}, (((InstancesOpacity[instance].ScrollBarImageTransparency or instance.ScrollBarImageTransparency))/duration) or 0)
+			}, (duration/((InstancesOpacity[instance].ScrollBarImageTransparency or instance.ScrollBarImageTransparency))) or 0)
 		end)
 		pcall(function()
 			library.Functions.Tween(instance, {
 				BackgroundTransparency = InstancesOpacity[instance].BackgroundTransparency
 					or instance.BackgroundTransparency,
-			}, (((InstancesOpacity[instance].BackgroundTransparency or instance.BackgroundTransparency))/duration) or 0)
+			}, (duration/((InstancesOpacity[instance].BackgroundTransparency or instance.BackgroundTransparency))) or 0)
 		end)
 		pcall(function()
 			library.Functions.Tween(
 				instance,
 				{ TextTransparency = InstancesOpacity[instance].TextTransparency or instance.TextTransparency },
-				(((InstancesOpacity[instance].TextTransparency or instance.TextTransparency))/duration) or 0
+				(duration/((InstancesOpacity[instance].TextTransparency or instance.TextTransparency))) or 0
 			)
 		end)
 		pcall(function()
 			library.Functions.Tween(
 				instance,
 				{ ImageTransparency = InstancesOpacity[instance].ImageTransparency or instance.ImageTransparency },
-				(((InstancesOpacity[instance].ImageTransparency or instance.ImageTransparency))/duration) or 0
+				(duration/((InstancesOpacity[instance].ImageTransparency or instance.ImageTransparency))) or 0
 			)
 		end)
 		if InstancesOpacity[instance] then
@@ -1003,27 +1003,27 @@ do
 				library.Functions.Tween(
 					v,
 					{ ScrollBarImageTransparency = InstancesOpacity[v].ScrollBarImageTransparency or v.ScrollBarImageTransparency },
-					(((InstancesOpacity[v].ScrollBarImageTransparency or v.ScrollBarImageTransparency))/duration) or 0)
+					(duration/((InstancesOpacity[v].ScrollBarImageTransparency or v.ScrollBarImageTransparency))) or 0)
 			end)
 			pcall(function()
 				library.Functions.Tween(
 					v,
 					{ BackgroundTransparency = InstancesOpacity[v].BackgroundTransparency or v.BackgroundTransparency },
-					(((InstancesOpacity[v].BackgroundTransparency or v.BackgroundTransparency))/duration) or 0
+					(duration/((InstancesOpacity[v].BackgroundTransparency or v.BackgroundTransparency))) or 0
 				)
 			end)
 			pcall(function()
 				library.Functions.Tween(
 					v,
 					{ TextTransparency = InstancesOpacity[v].TextTransparency or v.TextTransparency },
-					(((InstancesOpacity[v].TextTransparency or v.TextTransparency))/duration) or 0
+					(duration/((InstancesOpacity[v].TextTransparency or v.TextTransparency))) or 0
 				)
 			end)
 			pcall(function()
 				library.Functions.Tween(
 					v,
 					{ ImageTransparency = InstancesOpacity[v].ImageTransparency or v.ImageTransparency },
-					(((InstancesOpacity[v].ImageTransparency or v.ImageTransparency))/duration) or 0
+					(duration/((InstancesOpacity[v].ImageTransparency or v.ImageTransparency))) or 0
 				)
 			end)
 			if InstancesOpacity[v] then
