@@ -2865,6 +2865,31 @@ do
 			library.Functions.newInstance("UICorner", {
 				CornerRadius = UDim.new(0, library.Functions.findByIndex(config, "Corner") or 5),
 			}),
+			library.Functions.newInstance("Frame", {
+				Name = "Disabled_Frame",
+				BackgroundColor3 = library.Settings.theme.DarkContrast,
+				BackgroundTransparency = 0.4,
+				Size = UDim2.new(1, 0, 1, 0),
+				Visible = library.Functions.findByIndex(config, "Disabled") or false,
+				ZIndex = 2
+			}, {
+				library.Functions.newInstance("UICorner", {
+					CornerRadius = UDim.new(0, library.Functions.findByIndex(config, "Corner") or 5),
+				}),
+				library.Functions.newInstance("ImageLabel", {
+					Image = library.Icons.lock,
+					ImageColor3 = library.Settings.theme.TextColor,
+					BackgroundTransparency = 1,
+					Size = UDim2.new(0, 16, 0, 16),
+					Position = UDim2.new(0.5, 0, 0.5, 0),
+					AnchorPoint = Vector2.new(0.5, 0.5),
+					ZIndex = 2
+				}),
+			}),
+			library.Functions.newInstance("BoolValue", {
+				Name = "Disabled",
+				Value = library.Functions.findByIndex(config, "Disabled") or false,
+			}),
 			library.Functions.newInstance("StringValue", {
 				Name = "SearchValue",
 				Value = library.Functions.findByIndex(config, "Title") or "Button",
@@ -2877,6 +2902,9 @@ do
 
 		button.MouseButton1Click:Connect(function()
 			if debounce or library.OpenedWindow then
+				return
+			end
+			if button.Disabled.Value then
 				return
 			end
 
@@ -3184,6 +3212,31 @@ do
 					}),
 				}),
 			}),
+			library.Functions.newInstance("Frame", {
+				Name = "Disabled_Frame",
+				BackgroundColor3 = library.Settings.theme.DarkContrast,
+				BackgroundTransparency = 0.4,
+				Size = UDim2.new(1, 0, 1, 0),
+				Visible = library.Functions.findByIndex(config, "Disabled") or false,
+				ZIndex = 2
+			}, {
+				library.Functions.newInstance("UICorner", {
+					CornerRadius = UDim.new(0, library.Functions.findByIndex(config, "Corner") or 5),
+				}),
+				library.Functions.newInstance("ImageLabel", {
+					Image = library.Icons.lock,
+					ImageColor3 = library.Settings.theme.TextColor,
+					BackgroundTransparency = 1,
+					Size = UDim2.new(0, 16, 0, 16),
+					Position = UDim2.new(0.5, 0, 0.5, 0),
+					AnchorPoint = Vector2.new(0.5, 0.5),
+					ZIndex = 2
+				}),
+			}),
+			library.Functions.newInstance("BoolValue", {
+				Name = "Disabled",
+				Value = library.Functions.findByIndex(config, "Disabled") or false,
+			}),
 			library.Functions.newInstance("StringValue", {
 				Name = "SearchValue",
 				Value = library.Functions.findByIndex(config, "Title") or "Slider",
@@ -3212,6 +3265,9 @@ do
 		})
 
 		slider.Slider.InputBegan:Connect(function(input)
+			if slider.Disabled.Value then
+				return
+			end
 			if input.UserInputType == Enum.UserInputType.MouseButton1 then
 				dragging = true
 
@@ -3391,14 +3447,16 @@ do
 				Name = "IsEnabled",
 				Value = library.Functions.findByIndex(config, "Default") or false,
 			}),
-			library.Functions.newInstance("UIListLayout", {
-				Padding = UDim.new(0, 10),
-				VerticalAlignment = Enum.VerticalAlignment.Center,
-				FillDirection = Enum.FillDirection.Horizontal,
-			}),
+			-- library.Functions.newInstance("UIListLayout", {
+			-- 	Padding = UDim.new(0, 10),
+			-- 	VerticalAlignment = Enum.VerticalAlignment.Center,
+			-- 	FillDirection = Enum.FillDirection.Horizontal,
+			-- }),
 			library.Functions.newInstance("ImageButton", {
 				BackgroundColor3 = library.Settings.theme.Background,
 				Size = UDim2.new(0, 20, 0, 20),
+				Position = UDim2.new(0, 0, 0.5, 0),
+				AnchorPoint = Vector2.new(0, 0.5),
 				AutoButtonColor = false,
 			}, {
 				library.Functions.newInstance("UICorner", {
@@ -3424,9 +3482,9 @@ do
 			}),
 			library.Functions.newInstance("TextLabel", {
 				Name = "Title",
-				AnchorPoint = Vector2.new(0, 0.5),
 				BackgroundTransparency = 1,
-				Position = UDim2.new(0, 10, 0.5, 1),
+				Position = UDim2.new(0, 30, 0.5, 0),
+				AnchorPoint = Vector2.new(0, 0.5),
 				Size = UDim2.new(0.5, 0, 1, 0),
 				Font = Enum.Font.SciFi,
 				RichText = true,
@@ -3434,6 +3492,31 @@ do
 				TextColor3 = library.Settings.theme.TextColor,
 				TextSize = 12,
 				TextXAlignment = Enum.TextXAlignment.Left,
+			}),
+			library.Functions.newInstance("Frame", {
+				Name = "Disabled_Frame",
+				BackgroundColor3 = library.Settings.theme.DarkContrast,
+				BackgroundTransparency = 0.4,
+				Size = UDim2.new(1, 0, 1, 0),
+				Visible = library.Functions.findByIndex(config, "Disabled") or false,
+				ZIndex = 2
+			}, {
+				library.Functions.newInstance("UICorner", {
+					CornerRadius = UDim.new(0, library.Functions.findByIndex(config, "Corner") or 5),
+				}),
+				library.Functions.newInstance("ImageLabel", {
+					Image = library.Icons.lock,
+					ImageColor3 = library.Settings.theme.TextColor,
+					BackgroundTransparency = 1,
+					Size = UDim2.new(0, 16, 0, 16),
+					Position = UDim2.new(0.5, 0, 0.5, 0),
+					AnchorPoint = Vector2.new(0.5, 0.5),
+					ZIndex = 2
+				}),
+			}),
+			library.Functions.newInstance("BoolValue", {
+				Name = "Disabled",
+				Value = library.Functions.findByIndex(config, "Disabled") or false,
 			}),
 			library.Functions.newInstance("StringValue", {
 				Name = "SearchValue",
@@ -3456,6 +3539,9 @@ do
 		)
 
 		checkbox.MouseButton1Click:Connect(function()
+			if checkbox.Disabled.Value then
+				return
+			end
 			checkbox.IsEnabled.Value = not checkbox.IsEnabled.Value
 
 			self:updateCheckbox(
@@ -3471,6 +3557,9 @@ do
 			end
 		end)
 		checkbox.ImageButton.MouseButton1Click:Connect(function()
+			if checkbox.Disabled.Value then
+				return
+			end
 			checkbox.IsEnabled.Value = not checkbox.IsEnabled.Value
 
 			self:updateCheckbox(
@@ -3505,9 +3594,6 @@ do
 			library.Functions.newInstance("UICorner", {
 				CornerRadius = UDim.new(0, library.Functions.findByIndex(config, "Corner") or 5),
 			}),
-			library.Functions.newInstance("UIPadding", {
-				PaddingLeft = UDim.new(0, 10),
-			}),
 			library.Functions.newInstance("TextLabel", {
 				Name = "Title",
 				BackgroundTransparency = 1,
@@ -3520,6 +3606,10 @@ do
 				TextSize = 12,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextTruncate = Enum.TextTruncate.AtEnd,
+			}, {
+				library.Functions.newInstance("UIPadding", {
+					PaddingLeft = UDim.new(0, 10),
+				}),
 			}),
 			library.Functions.newInstance("ImageLabel", {
 				Name = "Button",
@@ -3548,6 +3638,31 @@ do
 					TextSize = 11,
 					TextTruncate = Enum.TextTruncate.AtEnd,
 				}),
+			}),
+			library.Functions.newInstance("Frame", {
+				Name = "Disabled_Frame",
+				BackgroundColor3 = library.Settings.theme.DarkContrast,
+				BackgroundTransparency = 0.4,
+				Size = UDim2.new(1, 0, 1, 0),
+				Visible = library.Functions.findByIndex(config, "Disabled") or false,
+				ZIndex = 2
+			}, {
+				library.Functions.newInstance("UICorner", {
+					CornerRadius = UDim.new(0, library.Functions.findByIndex(config, "Corner") or 5),
+				}),
+				library.Functions.newInstance("ImageLabel", {
+					Image = library.Icons.lock,
+					ImageColor3 = library.Settings.theme.TextColor,
+					BackgroundTransparency = 1,
+					Size = UDim2.new(0, 16, 0, 16),
+					Position = UDim2.new(0.5, 0, 0.5, 0),
+					AnchorPoint = Vector2.new(0.5, 0.5),
+					ZIndex = 2
+				}),
+			}),
+			library.Functions.newInstance("BoolValue", {
+				Name = "Disabled",
+				Value = library.Functions.findByIndex(config, "Disabled") or false,
 			}),
 			library.Functions.newInstance("StringValue", {
 				Name = "SearchValue",
@@ -3580,6 +3695,9 @@ do
 		end
 
 		keybind.MouseButton1Click:Connect(function()
+			if keybind.Disabled.Value then
+				return
+			end
 			library.Functions.Ripple(keybind.Button, 0.5)
 
 			if self.binds[keybind].connection then -- unbind
@@ -4499,22 +4617,22 @@ return library
 -- local page4 = window:addPage() -- new page
 -- local section1 = page2:addSection({ Divisions = 2 }) -- new section
 
--- -- section1:addViewPlayer({ player = player, position = CFrame.new(Vector3.new(0, 1.5, -5), Vector3.new(0, 1.5, 0)) })
--- section1:addButton({ section = 2 })
--- section1:addSlider({ section = 2, Max = 10 })
+-- section1:addViewPlayer({ player = player })
+-- section1:addButton({ section = 2, Disabled = true })
+-- section1:addSlider({ section = 2, Max = 10, Disabled = true })
 -- section1:addToggle({ section = 2, Disabled = true })
--- section1:addKeybind({ section = 2 })
--- section1:addCheckbox({ section = 2 })
+-- section1:addKeybind({ section = 2, Disabled = true })
+-- section1:addCheckbox({ section = 2, Disabled = true })
 -- section1:addClipboardLabel({ section = 2, text = "https://discord.gg/PremierX" })
 -- section1:addDropdown({
 -- 	section = 2,
 -- 	Title = "MultiDropdown",
 -- 	Multi = true,
--- 	List = { "Item 1", "Item 2", "Item 3" },
+-- 	List = { "Item 1", "Item 2", "Item 3" }
 -- })
 -- section1:addDropdown({
 -- 	section = 2,
--- 	List = { "Item 1", "Item 2", "Item 3", "Item 4" },
+-- 	List = { "Item 1", "Item 2", "Item 3", "Item 4" }
 -- })
 
 -- window:SelectPage(page2, true)
