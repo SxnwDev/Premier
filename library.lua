@@ -4481,40 +4481,40 @@ do
 	end
 end
 
--- return library
+return library
 
-local window = library.new() -- create new window
-local prefix = Enum.KeyCode.Home
+-- local window = library.new() -- create new window
+-- local prefix = Enum.KeyCode.Home
 
-local usePrefix = game:GetService("UserInputService").InputBegan:Connect(function(input, processed)
-	if not processed and input.KeyCode == prefix then
-		window:toggle()
-	end
-end)
-table.insert(connections, usePrefix)
+-- local usePrefix = game:GetService("UserInputService").InputBegan:Connect(function(input, processed)
+-- 	if not processed and input.KeyCode == prefix then
+-- 		window:toggle()
+-- 	end
+-- end)
+-- table.insert(connections, usePrefix)
 
-local page1 = window:addPage() -- new page
-local page2 = window:addPage() -- new page
-local page3 = window:addPage() -- new page
-local page4 = window:addPage() -- new page
-local section1 = page2:addSection({ Divisions = 2 }) -- new section
+-- local page1 = window:addPage() -- new page
+-- local page2 = window:addPage() -- new page
+-- local page3 = window:addPage() -- new page
+-- local page4 = window:addPage() -- new page
+-- local section1 = page2:addSection({ Divisions = 2 }) -- new section
 
--- section1:addViewPlayer({ player = player, position = CFrame.new(Vector3.new(0, 1.5, -5), Vector3.new(0, 1.5, 0)) })
-section1:addButton({ section = 2 })
-section1:addSlider({ section = 2, Max = 10 })
-section1:addToggle({ section = 2, Disabled = true })
-section1:addKeybind({ section = 2 })
-section1:addCheckbox({ section = 2 })
-section1:addClipboardLabel({ section = 2, text = "https://discord.gg/PremierX" })
-section1:addDropdown({
-	section = 2,
-	Title = "MultiDropdown",
-	Multi = true,
-	List = { "Item 1", "Item 2", "Item 3" },
-})
-section1:addDropdown({
-	section = 2,
-	List = { "Item 1", "Item 2", "Item 3", "Item 4" },
-})
+-- -- section1:addViewPlayer({ player = player, position = CFrame.new(Vector3.new(0, 1.5, -5), Vector3.new(0, 1.5, 0)) })
+-- section1:addButton({ section = 2 })
+-- section1:addSlider({ section = 2, Max = 10 })
+-- section1:addToggle({ section = 2, Disabled = true })
+-- section1:addKeybind({ section = 2 })
+-- section1:addCheckbox({ section = 2 })
+-- section1:addClipboardLabel({ section = 2, text = "https://discord.gg/PremierX" })
+-- section1:addDropdown({
+-- 	section = 2,
+-- 	Title = "MultiDropdown",
+-- 	Multi = true,
+-- 	List = { "Item 1", "Item 2", "Item 3" },
+-- })
+-- section1:addDropdown({
+-- 	section = 2,
+-- 	List = { "Item 1", "Item 2", "Item 3", "Item 4" },
+-- })
 
-window:SelectPage(page2, true)
+-- window:SelectPage(page2, true)
