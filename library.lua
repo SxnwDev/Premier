@@ -3871,6 +3871,7 @@ do
 			local model = CHARACTER:Clone()
 			model.Parent = ViewPlayer.WorldModel
 			model.Humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
+			model:SetPrimaryPartCFrame(CFrame.Angles(0, 0, 0))
 			model:SetPrimaryPartCFrame(library.Functions.findByIndex(newConfig, "Position") or CFrame.new(Vector3.new(0, 0, -5), Vector3.new(0, 0, 0)))
 
 			local function UpdateAnim(Char, CloneChar)
