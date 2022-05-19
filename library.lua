@@ -3333,8 +3333,10 @@ do
 			}
 			if toggle.Frame.Button.Position == position.Out then
 				active = false
-			else
+			elseif toggle.Frame.Button.Position == position.In then
 				active = true
+			else
+				active = not active
 			end
 			self:updateToggle(toggle, { Default = active })
 
